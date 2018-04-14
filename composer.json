@@ -2,6 +2,20 @@
     "name": "viperxes/rest",
     "description": "Rest recruitment task",
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "viperxes/rest",
+                "version": "master",
+                "source": {
+                    "url": "git@github.com:Viperxes/rest.git",
+                    "type": "git",
+                    "reference": "origin/master"
+                }
+            }
+        }
+    ],
     "authors": [
         {
             "name": "Viperxes",
