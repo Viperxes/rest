@@ -4,7 +4,7 @@ namespace Viperxes\Rest\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Viperxes\Rest\Models\Item;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class ItemTest extends TestCase
 {
