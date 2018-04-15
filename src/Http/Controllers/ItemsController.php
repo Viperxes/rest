@@ -65,7 +65,7 @@ class ItemsController extends BaseController
     public function update(Request $request, Item $item)
     {
         $data = $request->validate([
-            'name' => 'required|string|min:1|unique:items,' . $item->id,
+            'name' => 'required|string|min:1|unique:items,name,' . $item->id,
             'amount' => 'required|numeric|min:0'
         ]);
 
