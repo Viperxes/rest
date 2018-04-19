@@ -61,7 +61,7 @@ class ItemTest extends TestCase
             'amount' => 12
         ]);
 
-        $this->json('GET', 'api/items')
+        $this->json('GET', 'api/v1/items')
             ->assertStatus(200)
             ->assertJson([
                 ['id' => 1, 'name' => 'Produkt 1', 'amount' => 4],
@@ -90,7 +90,7 @@ class ItemTest extends TestCase
             'amount' => 12
         ]);
 
-        $this->json('GET', 'api/items?amount=eq:4')
+        $this->json('GET', 'api/v1/items?amount=eq:4')
             ->assertStatus(200)
             ->assertJson([
                 ['id' => 1, 'name' => 'Produkt 1', 'amount' => 4]
@@ -124,7 +124,7 @@ class ItemTest extends TestCase
             'amount' => 6
         ]);
 
-        $this->json('GET', 'api/items?amount=gt:6')
+        $this->json('GET', 'api/v1/items?amount=gt:6')
             ->assertStatus(200)
             ->assertJson([
                 ['id' => 2, 'name' => 'Produkt 2', 'amount' => 12]
@@ -158,7 +158,7 @@ class ItemTest extends TestCase
             'amount' => 6
         ]);
 
-        $this->json('GET', 'api/items?amount=gte:6')
+        $this->json('GET', 'api/v1/items?amount=gte:6')
             ->assertStatus(200)
             ->assertJson([
                 ['id' => 2, 'name' => 'Produkt 2', 'amount' => 12],
@@ -193,7 +193,7 @@ class ItemTest extends TestCase
             'amount' => 6
         ]);
 
-        $this->json('GET', 'api/items?amount=lt:6')
+        $this->json('GET', 'api/v1/items?amount=lt:6')
             ->assertStatus(200)
             ->assertJson([
                 ['id' => 1, 'name' => 'Produkt 1', 'amount' => 4]
@@ -224,7 +224,7 @@ class ItemTest extends TestCase
             'amount' => 6
         ]);
 
-        $this->json('GET', 'api/items?amount=lte:6')
+        $this->json('GET', 'api/v1/items?amount=lte:6')
             ->assertStatus(200)
             ->assertJson([
                 ['id' => 1, 'name' => 'Produkt 1', 'amount' => 4],
@@ -247,7 +247,7 @@ class ItemTest extends TestCase
             'amount' => 0
         ]);
 
-        $this->json('GET', 'api/items/3')
+        $this->json('GET', 'api/v1/items/3')
             ->assertStatus(200)
             ->assertJson([
                 'id' => 3,
@@ -272,7 +272,7 @@ class ItemTest extends TestCase
             'amount' => 6
         ];
 
-        $this->json('POST', 'api/items', $payload)
+        $this->json('POST', 'api/v1/items', $payload)
             ->assertStatus(201)
             ->assertJson($payload)
             ->assertJsonStructure([
@@ -298,7 +298,7 @@ class ItemTest extends TestCase
             'amount' => 15
         ];
 
-        $this->json('PUT', 'api/items/5', $payload)
+        $this->json('PUT', 'api/v1/items/5', $payload)
             ->assertStatus(200)
             ->assertJson($payload)
             ->assertJsonStructure([
@@ -319,7 +319,7 @@ class ItemTest extends TestCase
             'amount' => 2
         ]);
 
-        $this->json('DELETE', 'api/items/5')
+        $this->json('DELETE', 'api/v1/items/5')
             ->assertStatus(204);
     }
 }
