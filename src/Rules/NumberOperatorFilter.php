@@ -3,7 +3,7 @@
 namespace Viperxes\Rest\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use Viperxes\Rest\ItemSearch\Filters\Filter;
+use Viperxes\Rest\Repositories\Contracts\FilterInterface;
 
 class NumberOperatorFilter implements Rule
 {
@@ -16,7 +16,7 @@ class NumberOperatorFilter implements Rule
      */
     public function passes($attribute, $value)
     {
-        return preg_match(Filter::NUMBER_OPERATOR_REGEX, $value);
+        return preg_match(FilterInterface::NUMBER_OPERATOR_REGEX, $value);
     }
 
     /**

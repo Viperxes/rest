@@ -2,89 +2,86 @@
 
 namespace Viperxes\Rest\Http\Controllers;
 
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Http\Request;
-use Viperxes\Rest\ItemSearch\ItemSearch;
-use Viperxes\Rest\Models\Item;
-use Viperxes\Rest\Rules\NumberOperatorFilter;
+use Viperxes\Rest\Http\Requests\ {
+    SearchItems, StoreItem, UpdateItem
+};
+use Viperxes\Rest\Http\Responses\StatusCodes;
+use Viperxes\Rest\Repositories\Filters\Amount;
+use Viperxes\Rest\Repositories\ItemRepository;
 
 class ItemsController extends BaseController
 {
+    protected $repository;
+
+    public function __construct(ItemRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param SearchItems $request
+     * @return Response
      */
-    public function index(Request $request)
+    public function index(SearchItems $request)
     {
-        $request->validate([
-            'amount' => new NumberOperatorFilter
-        ]);
+        $items = $this->repository->skipFilter(!$request->has('amount'))
+            ->getByFilter(new Amount(), $request->all())->all();
 
-        return response()->json(ItemSearch::apply($request));
+        return response()->json($items, StatusCodes::HTTP_OK);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreItem $request
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(StoreItem $request)
     {
-        $data = $request->validate([
-            'id' => 'numeric|unique:items',
-            'name' => 'required|string|min:1|unique:items',
-            'amount' => 'required|numeric|min:0'
-        ]);
+        $item = $this->repository->create($request->all());
 
-        $item = Item::create($data);
-
-        return response()->json($item, 201);
+        return response()->json($item, StatusCodes::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Item  $item
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return Response
      */
-    public function show(Item $item)
+    public function show($id)
     {
-        return response()->json($item);
+        return response()->json($this->repository->find($id), StatusCodes::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Item  $item
-     * @return \Illuminate\Http\Response
+     * @param UpdateItem $request
+     * @param $id
+     * @return Response
      */
-    public function update(Request $request, Item $item)
+    public function update(UpdateItem $request, $id)
     {
-        $data = $request->validate([
-            'name' => 'required|string|min:1|unique:items,name,' . $item->id,
-            'amount' => 'required|numeric|min:0'
-        ]);
+        $item = $this->repository->update($request->all(), $id);
 
-        $item->update($data);
-
-        return response()->json($item);
+        return response()->json($item, StatusCodes::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Item  $item
-     * @throws \Exception
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return Response
      */
-    public function destroy(Item $item)
+    public function destroy($id)
     {
-        $item->delete();
+        $this->repository->delete($id);
 
-        return response()->json(null, 204);
+        return response()->json(null, StatusCodes::HTTP_NO_CONTENT);
     }
 }

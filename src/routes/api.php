@@ -1,13 +1,5 @@
 <?php
 
-Route::group([
-    'namespace' => 'Viperxes\Rest\Http\Controllers',
-    'prefix' => 'api',
+Route::apiResource('api/v1/items', 'Viperxes\Rest\Http\Controllers\ItemsController', [
     'middleware' => 'api'
-], function () {
-    Route::get('items', 'ItemsController@index');
-    Route::get('items/{item}', 'ItemsController@show');
-    Route::post('items', 'ItemsController@store');
-    Route::put('items/{item}', 'ItemsController@update');
-    Route::delete('items/{item}', 'ItemsController@destroy');
-});
+]);
